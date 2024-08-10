@@ -71,6 +71,24 @@ app.post("/add",(req,res)=>{
     })
 })
 
+app.post("/view",(req,res)=>{
+    let token=req.headers.token
+    jwt.verify(token,"rescueapp",(error,decoded)=>{
+        if (decoded) {
+            addmodel.find().then(
+                (items)=>{
+                    res.json(items)
+                }
+            ).catch(
+                (error)=>{
+                    res.json({"status":"error"})
+                }
+            )
+        } else {
+            res.json({"status":"invalid authentication"})
+        }
+    })
+})
 
 
 app.listen(8080,()=>{
